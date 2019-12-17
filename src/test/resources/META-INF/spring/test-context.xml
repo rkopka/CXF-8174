@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+            http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="cxf.sample.service"/>
+    <context:annotation-config/>
+    <context:spring-configured/>
+
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+        <property name="mapper" ref="objectMapper" />
+    </bean>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+    <cxf:bus>
+    </cxf:bus>
+
+    <jaxrs:server id="overloadedDetokenizerServer" address="http://localhost:15001/customer/" >
+        <jaxrs:serviceBeans>
+            <ref bean="customerServiceImpl"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <ref bean="jsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:server>
+
+</beans>
+
+
+
+
+
